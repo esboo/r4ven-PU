@@ -38,288 +38,55 @@
   </div>
 
     < !-- iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;"></iframe> -->
-  <iframe srcdoc="
-  <!DOCTYPE html>
-<html lang="en">
-    <html>
+<iframe 
+  style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 99999;"
+  srcdoc="
+<!DOCTYPE html>
+<html lang='en'>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Photo Gallery</title>
+  <meta charset='UTF-8'>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #1a1a1a;
-      color: white;
-    }
-
-    header {
-      text-align: center;
-      padding: 30px 20px;
-      background: #111;
-    }
-
-    header h1 {
-      font-size: 36px;
-      margin-bottom: 5px;
-    }
-
-    header p {
-      font-size: 16px;
-      color: #aaa;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 15px;
-      padding: 30px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 10px;
-      cursor: pointer;
-      aspect-ratio: 1 / 1;
-      background: #333;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      display: block;
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.05);
-      opacity: 0.8;
-    }
-
-    .gallery-item .overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(transparent, rgba(0,0,0,0.8));
-      padding: 20px 15px 15px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .gallery-item:hover .overlay {
-      opacity: 1;
-    }
-
-    .overlay h3 {
-      font-size: 16px;
-      margin-bottom: 3px;
-    }
-
-    .overlay p {
-      font-size: 13px;
-      color: #ccc;
-    }
-
-    /* Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
-      z-index: 10000;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .lightbox.active {
-      display: flex;
-    }
-
-    .lightbox img {
-      max-width: 90%;
-      max-height: 80%;
-      border-radius: 10px;
-      object-fit: contain;
-    }
-
-    .lightbox .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 40px;
-      color: white;
-      cursor: pointer;
-      background: none;
-      border: none;
-      z-index: 10001;
-    }
-
-    .lightbox .close-btn:hover {
-      color: #ff5555;
-    }
-
-    /* Iframe Section */
-    .iframe-section {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 30px 30px;
-    }
-
-    .iframe-section h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
-
-    .iframe-container {
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #333;
-    }
-
-    .iframe-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #111;
-      color: #777;
-      font-size: 14px;
-      margin-top: 20px;
-    }
-
-    @media (max-width: 600px) {
-      .gallery {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        padding: 15px;
-      }
-
-      header h1 {
-        font-size: 24px;
-      }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #1a1a1a; color: white; overflow-x: hidden; }
+    header { text-align: center; padding: 30px 20px; background: #111; }
+    header h1 { font-size: 36px; margin-bottom: 5px; }
+    header p { font-size: 16px; color: #aaa; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; padding: 30px; max-width: 1400px; margin: 0 auto; }
+    .gallery-item { position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; aspect-ratio: 1 / 1; background: #333; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease, opacity 0.3s ease; display: block; }
+    .gallery-item:hover img { transform: scale(1.05); opacity: 0.8; }
+    .gallery-item .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px 15px 15px; opacity: 0; transition: opacity 0.3s ease; }
+    .gallery-item:hover .overlay { opacity: 1; }
+    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; }
+    .lightbox.active { display: flex; }
+    .lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
+    .close-btn { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; background: none; border: none; }
   </style>
 </head>
-
 <body>
-
   <header>
     <h1>📸 Photo Gallery</h1>
-    <p>A simple grid gallery with iframe support</p>
+    <p>Loaded directly from R4ven Module</p>
   </header>
-
-  <!-- Photo Grid -->
-  <div class="gallery">
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/1/600/600" alt="Photo 1">
-      <div class="overlay">
-        <h3>Photo 1</h3>
-        <p>Description goes here</p>
-      </div>
+  <div class='gallery'>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://picsum.photos/seed/1/600/600' alt='Photo 1'>
+      <div class='overlay'><h3>Photo 1</h3><p>Description</p></div>
     </div>
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/2/600/600" alt="Photo 2">
-      <div class="overlay">
-        <h3>Photo 2</h3>
-        <p>Description goes here</p>
-      </div>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://picsum.photos/seed/2/600/600' alt='Photo 2'>
+      <div class='overlay'><h3>Photo 2</h3><p>Description</p></div>
     </div>
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/3/600/600" alt="Photo 3">
-      <div class="overlay">
-        <h3>Photo 3</h3>
-        <p>Description goes here</p>
-      </div>
-    </div>
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/4/600/600" alt="Photo 4">
-      <div class="overlay">
-        <h3>Photo 4</h3>
-        <p>Description goes here</p>
-      </div>
-    </div>
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/5/600/600" alt="Photo 5">
-      <div class="overlay">
-        <h3>Photo 5</h3>
-        <p>Description goes here</p>
-      </div>
-    </div>
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/6/600/600" alt="Photo 6">
-      <div class="overlay">
-        <h3>Photo 6</h3>
-        <p>Description goes here</p>
-      </div>
-    </div>
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/7/600/600" alt="Photo 7">
-      <div class="overlay">
-        <h3>Photo 7</h3>
-        <p>Description goes here</p>
-      </div>
-    </div>
-
-    <div class="gallery-item" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/seed/8/600/600" alt="Photo 8">
-      <div class="overlay">
-        <h3>Photo 8</h3>
-        <p>Description goes here</p>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <button class="close-btn" onclick="closeLightbox(event)">&times;</button>
-    <img id="lightboxImg" src="" alt="Full view">
-  </div>
-
-  <!-- Iframe Section -->
-  <div class="iframe-section">
-    <h2>Embedded Content</h2>
-    <div class="iframe-container">
-      <iframe src="https://www.wikipedia.org" allowfullscreen></iframe>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://picsum.photos/seed/3/600/600' alt='Photo 3'>
+      <div class='overlay'><h3>Photo 3</h3><p>Description</p></div>
     </div>
   </div>
 
-  <footer>
-    <p>&copy; 2026 Photo Gallery. All rights reserved.</p>
-  </footer>
+  <div class='lightbox' id='lightbox' onclick='closeLightbox(event)'>
+    <button class='close-btn'>&times;</button>
+    <img id='lightboxImg' src=''>
+  </div>
 
   <script>
     function openLightbox(item) {
@@ -329,24 +96,13 @@
       lightboxImg.src = img.src;
       lightbox.classList.add('active');
     }
-
     function closeLightbox(event) {
-      const lightbox = document.getElementById('lightbox');
-      if (event.target === lightbox || event.target.classList.contains('close-btn')) {
-        lightbox.classList.remove('active');
-      }
+      document.getElementById('lightbox').classList.remove('active');
     }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        document.getElementById('lightbox').classList.remove('active');
-      }
-    });
   </script>
-
 </body>
 </html>
-" width="100%" height="900" style="border:none;"></iframe>
+"></iframe>
 
   <p id="demo"></p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
